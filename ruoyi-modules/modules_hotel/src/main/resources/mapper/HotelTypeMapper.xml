@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hotel.mapper.HotelTypeMapper">
+
+    <resultMap type="com.ruoyi.hotel.pojo.HotelType" id="RoomTypeResult">
+        <result property="typeId" column="type_id"/>
+        <result property="name" column="name"/>
+        <result property="amenities" column="amenities"/>
+        <result property="capacity" column="capacity"/>
+        <result property="imageUrl" column="image_url"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectRoomTypeVo">
+        select type_id, name, amenities, capacity, image_url, create_by, create_time, update_by, update_time
+        from hotel_type
+    </sql>
+
+    <select id="selectHotelTypeList" parameterType="com.ruoyi.hotel.pojo.HotelType" resultMap="RoomTypeResult">
+        <include refid="selectRoomTypeVo"/>
+        <where>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="capacity != null  and capacity != ''"> and capacity = #{capacity}</if>
+        </where>
+    </select>
+
+
+
+    <select id="selectHotelTypeById" parameterType="Long" resultMap="RoomTypeResult">
+        <include refid="selectRoomTypeVo"/>
+        where type_id = #{typeId}
+    </select>
+
+    <insert id="insertHotelType" parameterType="com.ruoyi.hotel.pojo.HotelType" useGeneratedKeys="true" keyProperty="typeId">
+        insert into hotel_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="amenities != null and amenities != ''">amenities,</if>
+            <if test="capacity != null and capacity != ''">capacity,</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="amenities != null and amenities != ''">#{amenities},</if>
+            <if test="capacity != null and capacity != ''">#{capacity},</if>
+            <if test="imageUrl != null and imageUrl != ''">#{imageUrl},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateHotelType" parameterType="com.ruoyi.hotel.pojo.HotelType">
+        update hotel_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="amenities != null and amenities != ''">amenities = #{amenities},</if>
+            <if test="capacity != null and capacity != ''">capacity = #{capacity},</if>
+            <if test="imageUrl != null and imageUrl != ''">image_url = #{imageUrl},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where type_id = #{typeId}
+    </update>
+
+    <delete id="deleteHotelTypeById" parameterType="Long">
+        delete from hotel_type where type_id = #{typeId}
+    </delete>
+
+    <delete id="deleteHotelTypeByIds" parameterType="String">
+        delete from hotel_type where type_id in
+        <foreach item="typeId" collection="array" open="(" separator="," close=")">
+            #{typeId}
+        </foreach>
+    </delete>
+</mapper>

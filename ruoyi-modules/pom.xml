@@ -13,6 +13,7 @@
         <module>ruoyi-gen</module>
         <module>ruoyi-job</module>
         <module>ruoyi-file</module>
+        <module>modules_hotel</module> <!--项目名 而非应用名-->
     </modules>
 
     <artifactId>ruoyi-modules</artifactId>

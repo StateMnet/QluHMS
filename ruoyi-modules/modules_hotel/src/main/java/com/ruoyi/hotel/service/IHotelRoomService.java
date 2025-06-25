@@ -1,0 +1,62 @@
+package com.ruoyi.hotel.service;
+
+
+import com.ruoyi.hotel.pojo.HotelRoom;
+
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * 房间信息Service接口
+ */
+public interface IHotelRoomService {
+    /**
+     * 查询房间信息
+     *
+     * @param roomId 房间id
+     * @return 房间信息
+     */
+    HotelRoom selectHotelRoomById(Long roomId);
+
+    /**
+     * 查询房间信息列表
+     *
+     * @param hotelRoom 房间信息
+     * @return 房间信息集合
+     */
+    List<HotelRoom> selectHotelRoomList(HotelRoom hotelRoom);
+
+    /**
+     * 新增房间信息
+     *
+     * @param hotelRoom 房间信息
+     * @return 结果
+     */
+    int insertHotelRoom(HotelRoom hotelRoom);
+
+    /**
+     * 修改房间信息
+     *
+     * @param hotelRoom 房间信息
+     * @return 结果
+     */
+    int updateHotelRoom(HotelRoom hotelRoom);
+
+    /**
+     * 批量删除房间信息
+     *
+     * @param roomIds 需要删除的房间id
+     * @return 结果
+     */
+    int deleteHotelRoomByIds(Long[] roomIds);
+
+    /**
+     * 删除房间信息信息
+     *
+     * @param roomId 房间id
+     * @return 结果
+     */
+    int deleteHotelRoomById(Long roomId);
+
+    HashMap<String, String> selectAllRoomType();
+}
