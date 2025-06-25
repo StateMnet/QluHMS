@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hotel.mapper.HotelOrderMapper">
+
+    <resultMap type="com.ruoyi.hotel.pojo.HotelOrder" id="HotelOrderResult">
+        <result property="orderId" column="order_id"/>
+        <result property="roomType" column="room_type"/>
+        <result property="roomId" column="room_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="othersName" column="others_name"/>
+        <result property="checkInTime" column="check_in_time"/>
+        <result property="checkOutTime" column="check_out_time"/>
+        <result property="status" column="status"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectHotelOrderVo">
+        select order_id, room_type, room_id, user_id, user_name, others_name, check_in_time, check_out_time, status, create_by, create_time, update_by, update_time
+        from hotel_order
+    </sql>
+
+    <select id="selectHotelOrderList" parameterType="com.ruoyi.hotel.pojo.HotelOrder" resultMap="HotelOrderResult">
+        <include refid="selectHotelOrderVo"/>
+        <where>
+            <if test="roomType != null "> and room_type = #{roomType}</if>
+            <if test="roomId != null "> and room_id = #{roomId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="userName != null and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="othersName != null and othersName != ''"> and others_name like concat('%', #{othersName}, '%')</if>
+            <if test="checkInTime != null "> and check_in_time = #{checkInTime}</if>
+            <if test="checkOutTime != null "> and check_out_time = #{checkOutTime}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+
+    <select id="selectHotelOrderById" parameterType="Long" resultMap="HotelOrderResult">
+        <include refid="selectHotelOrderVo"/>
+        where order_id = #{orderId}
+    </select>
+
+    <insert id="insertHotelOrder" parameterType="com.ruoyi.hotel.pojo.HotelOrder" useGeneratedKeys="true" keyProperty="orderId">
+        insert into hotel_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomType != null">room_type,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="othersName != null">others_name,</if>
+            <if test="checkInTime != null">check_in_time,</if>
+            <if test="checkOutTime != null">check_out_time,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomType != null">#{roomType},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="othersName != null">#{othersName},</if>
+            <if test="checkInTime != null">#{checkInTime},</if>
+            <if test="checkOutTime != null">#{checkOutTime},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateHotelOrder" parameterType="com.ruoyi.hotel.pojo.HotelOrder">
+        update hotel_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomType != null">room_type = #{roomType},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="othersName != null">others_name = #{othersName},</if>
+            <if test="checkInTime != null">check_in_time = #{checkInTime},</if>
+            <if test="checkOutTime != null">check_out_time = #{checkOutTime},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time = sysdate()
+        </trim>
+        where order_id = #{orderId}
+    </update>
+
+    <delete id="deleteHotelOrderById" parameterType="Long">
+        delete from hotel_order where order_id = #{orderId}
+    </delete>
+
+    <delete id="deleteHotelOrderByIds" parameterType="String">
+        delete from hotel_order where order_id in
+        <foreach item="orderId" collection="array" open="(" separator="," close=")">
+            #{orderId}
+        </foreach>
+    </delete>
+
+</mapper> 
